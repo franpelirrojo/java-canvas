@@ -1,22 +1,24 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 
 public class Render extends Canvas{
-    private Scare scare = new Scare(this, 200, 200, 200, 10);
+    private Scare scare = new Scare(this, 600, 400, 200, 10);
     private double angle = 0;
 
     public Render() {
         setBackground(Color.GRAY);
-        addKeyListener(new KeyAdapter() {
+        addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    scare.rotate(angle);
-                    System.out.println("Rotado " + angle + " grados");
+            public void mouseMoved(MouseEvent e) {
+                try {
+                    Thread.sleep(16);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
                 }
+                scare.rotate(-angle);
             }
         });
     }
@@ -74,11 +76,17 @@ public class Render extends Canvas{
             angle += 360;
         }
 
-        this.angle = angle;
+        if (Double.isNaN(angle)) {
+            System.out.println(dot);
+            System.out.println(angle);
+            return;
+        }else {
+            this.angle = angle;
+        }
 
-        g.setColor(Color.YELLOW);
-        g.drawLine((int) Math.round(horizontal[0]), (int) Math.round(horizontal[1]), mouseX, mouseY);
-        g.drawString(String.format("Angle: %.2f°", this.angle), (int) (horizontal[0] + padding), (int) (horizontal[1] - padding));
+        //g.setColor(Color.YELLOW);
+        //g.drawLine((int) Math.round(horizontal[0]), (int) Math.round(horizontal[1]), mouseX, mouseY);
+        //g.drawString(String.format("Angle: %.2f°", this.angle), (int) (horizontal[0] + padding), (int) (horizontal[1] - padding));
     }
 
     private void render() {
@@ -92,7 +100,6 @@ public class Render extends Canvas{
             g.clearRect(0, 0, getWidth(), getHeight());
             scare.render(g);
             renderMouseinfo(g);
-            scare.rotate(0.3);
         } finally {
             g.dispose();
         }
