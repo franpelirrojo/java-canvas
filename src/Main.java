@@ -1,7 +1,4 @@
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
 
 import javax.swing.*;
 
@@ -12,6 +9,7 @@ public class Main {
         frame.setSize(1080, 720);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         JPanel panelLateral = new JPanel();
         Render renderPanel = new Render();

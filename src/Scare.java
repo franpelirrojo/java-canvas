@@ -99,4 +99,18 @@ public class Scare {
         double[] line = horizon.line();
         g.drawLine((int) Math.round(line[0]), (int) Math.round(line[1]), (int) Math.round(line[2]), (int) Math.round(line[3]));
     }
+
+    public void moveHorizontal(int m){
+       for (int i = 0; i < originalVertices[0].length; i++) {
+           originalVertices[0][i] += m;
+       }
+       saveDisplayVertex();
+    }
+
+    public void moveVertical(int m){
+        for (int i = 0; i < originalVertices[0].length; i++) {
+            originalVertices[1][i] += m;
+        }
+        saveDisplayVertex();
+    }
 }

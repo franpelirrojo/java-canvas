@@ -1,26 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 
 public class Render extends Canvas{
-    private Scare scare = new Scare(this, 600, 400, 200, 10);
-    private double angle = 0;
+    private static final boolean DEBUG = true;
+    private Point point = new Point(getHeight() /2, getWidth()/2, 7);
+    private int mouseX;
+    private int mouseY;
 
     public Render() {
-        setBackground(Color.GRAY);
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                try {
-                    Thread.sleep(16);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                scare.rotate(-angle);
-            }
-        });
+        setBackground(new Color(255, 245, 243));
     }
 
     public void start() {
@@ -39,12 +28,12 @@ public class Render extends Canvas{
     }
 
     private void renderMouseinfo(Graphics g) {
-        Point p = MouseInfo.getPointerInfo().getLocation();
+        java.awt.Point p = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(p, this);
 
         int padding = 5;
-        int mouseX = p.x;
-        int mouseY = p.y;
+        mouseX = p.x;
+        mouseY = p.y;
 
         int renderX = mouseX + padding;
         int renderY = mouseY - padding;
@@ -53,6 +42,7 @@ public class Render extends Canvas{
         g.setColor(Color.green);
         g.drawString(text, renderX, renderY);
 
+        /*
         double[] horizontal = scare.getHorizon().line();
         double[] horizontalVector = scare.getHorizon().computeNormalicedVector();
 
@@ -79,14 +69,54 @@ public class Render extends Canvas{
         if (Double.isNaN(angle)) {
             System.out.println(dot);
             System.out.println(angle);
-            return;
         }else {
             this.angle = angle;
         }
+        */
+    }
 
-        //g.setColor(Color.YELLOW);
-        //g.drawLine((int) Math.round(horizontal[0]), (int) Math.round(horizontal[1]), mouseX, mouseY);
-        //g.drawString(String.format("Angle: %.2f°", this.angle), (int) (horizontal[0] + padding), (int) (horizontal[1] - padding));
+
+    private void renderFixedGrid(Graphics g) {
+        int cellSize = 80;
+        int cols = (int) Math.floor((double) getWidth() / cellSize);
+        int rows = (int) Math.floor((double) getHeight() / cellSize);
+        int ofsetCols = getWidth()%cellSize;
+        int ofsetRows = getHeight()%cellSize;
+        int cellWidth  = cellSize + ofsetCols / cols;
+        int cellHeight = cellSize + ofsetRows / rows;
+        int moduleWidth  = ofsetCols%cols;
+        int moduleHeight = ofsetRows%rows;
+
+        g.setColor(new Color(49, 49, 49));
+        for (int i = 0; i <= cols; i++){
+            int x = i * cellWidth;
+            g.drawLine(x, 0, x, getHeight());
+            g.drawLine(x+1, 0, x+1, getHeight());
+            g.drawString(String.valueOf(i+1), x + 15, 15);
+        }
+        for (int i = 0; i <= rows; i++) {
+            int y = i * cellHeight;
+            g.drawLine(0, y, getWidth(), y);
+            g.drawLine(0, y+1, getWidth(), y+1);
+            g.drawString(String.valueOf(i+1), 15, y + 15);
+        }
+
+        if (DEBUG) {
+            String[] logs = new String[6];
+            logs[0] = String.format("Cols: %s | Rows: %s", cols, rows);
+            logs[1] = String.format("Width: %s | Height: %s", getWidth(), getHeight());
+            logs[2] = String.format("Width Ofset: %s | Height Ofset: %s", ofsetCols, ofsetRows);
+            logs[3] = String.format("Cell size: %s", cellSize);
+            logs[4] = String.format("Cell Width: %s | Cell Height: %s", cellWidth, cellHeight);
+            logs[5] = String.format("Width module: %s | Height module: %s", moduleWidth, moduleHeight);
+
+            g.setColor(Color.black);
+            g.fillRect(getWidth()-200, getHeight()-200, 200, 200);
+            g.setColor(Color.magenta);
+            for (int i = 0; i < logs.length; i++) {
+                g.drawString(logs[i], getWidth()-200, getHeight()-185+(15*i));
+            }
+        }
     }
 
     private void render() {
@@ -98,7 +128,7 @@ public class Render extends Canvas{
         Graphics g = bufferStrategy.getDrawGraphics();
         try {
             g.clearRect(0, 0, getWidth(), getHeight());
-            scare.render(g);
+            renderFixedGrid(g);
             renderMouseinfo(g);
         } finally {
             g.dispose();
