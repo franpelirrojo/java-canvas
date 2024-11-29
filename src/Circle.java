@@ -1,19 +1,20 @@
 import java.awt.*;
 
-public class Point {
+public class Circle {
     double [] position = new double[2];
     int[] displayPosition = new int[2];
-    int size;
+    int r;
 
-    public Point(int x, int y, int size) {
-       this.size = size;
-       position[0] = x;
-       position[1] = y;
+    public Circle(int x, int y, int r) {
+        this.r = r;
+        position[0] = x;
+        position[1] = y;
     }
 
     public void render(Graphics g) {
         saveDisplay();
-       g.fillOval(displayPosition[0], displayPosition[1], size, size);
+        g.setColor(Color.green);
+        g.fillOval(displayPosition[0], displayPosition[1], r/2, r/2);
     }
 
     public void saveDisplay() {

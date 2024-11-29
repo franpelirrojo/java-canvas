@@ -4,7 +4,6 @@ import java.awt.image.BufferStrategy;
 
 public class Render extends Canvas{
     private static final boolean DEBUG = true;
-    private Point point = new Point(getHeight() /2, getWidth()/2, 7);
     private int mouseX;
     private int mouseY;
 
@@ -25,6 +24,27 @@ public class Render extends Canvas{
             } catch (InterruptedException ignored) {
             }
         }
+    }
+
+    private void render() {
+        BufferStrategy bufferStrategy = getBufferStrategy();
+        if (bufferStrategy == null) {
+            return;
+        }
+
+        Graphics g = bufferStrategy.getDrawGraphics();
+        try {
+            g.clearRect(0, 0, getWidth(), getHeight());
+            renderMouseinfo(g);
+        } finally {
+            g.dispose();
+        }
+
+        bufferStrategy.show();
+    }
+
+    private void renderGrid(Graphics g) {
+
     }
 
     private void renderMouseinfo(Graphics g) {
@@ -75,7 +95,7 @@ public class Render extends Canvas{
         */
     }
 
-
+/*
     private void renderFixedGrid(Graphics g) {
         int cellSize = 80;
         int cols = (int) Math.floor((double) getWidth() / cellSize);
@@ -118,22 +138,5 @@ public class Render extends Canvas{
             }
         }
     }
-
-    private void render() {
-        BufferStrategy bufferStrategy = getBufferStrategy();
-        if (bufferStrategy == null) {
-            return;
-        }
-
-        Graphics g = bufferStrategy.getDrawGraphics();
-        try {
-            g.clearRect(0, 0, getWidth(), getHeight());
-            renderFixedGrid(g);
-            renderMouseinfo(g);
-        } finally {
-            g.dispose();
-        }
-
-        bufferStrategy.show();
-    }
+*/
 }
