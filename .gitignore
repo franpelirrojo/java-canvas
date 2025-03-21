@@ -46,9 +46,3 @@ buildNumber.properties
 
 # Eclipse LSP
 .settings/
-
-# Proyecto
-files.xml
-tokens/
-resources/
-*.sh
