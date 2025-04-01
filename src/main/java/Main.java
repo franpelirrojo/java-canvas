@@ -1,7 +1,12 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.MouseInfo;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.image.BufferStrategy;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class Main {
     private static Window window;

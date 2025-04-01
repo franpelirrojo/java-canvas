@@ -1,6 +1,10 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.image.BufferStrategy;
+
+import javax.swing.SwingUtilities;
 
 public class Render extends Canvas{
     private static final boolean DEBUG = true;
@@ -41,10 +45,6 @@ public class Render extends Canvas{
         }
 
         bufferStrategy.show();
-    }
-
-    private void renderGrid(Graphics g) {
-
     }
 
     private void renderMouseinfo(Graphics g) {
@@ -95,7 +95,6 @@ public class Render extends Canvas{
         */
     }
 
-/*
     private void renderFixedGrid(Graphics g) {
         int cellSize = 80;
         int cols = (int) Math.floor((double) getWidth() / cellSize);
@@ -138,5 +137,4 @@ public class Render extends Canvas{
             }
         }
     }
-*/
 }
